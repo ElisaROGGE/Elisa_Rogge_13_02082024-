@@ -1,13 +1,109 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser, updateUser } from "../../services/user/user.service";
+import { setUser } from "../../store/userSlice";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { routes } from "../../routes";
 
 interface UserProps {}
 
 const User: React.FC<UserProps> = () => {
-    return(
-        <main className="main bg-dark">
+  const [lastName, setLastName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state?.user);
+  const navigate = useNavigate();
+  console.log(user, "user");
+
+  const onSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const values = { firstName, lastName };
+    console.log(values, "values");
+    try {
+      await updateUser(values, user.token);
+      const getUserData = await getUser(user.token);
+      setFirstName(values.firstName);
+      setLastName(values.lastName);
+      dispatch(
+        setUser({
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: getUserData.email,
+          token: user.token,
+        })
+      );
+      setShowForm(false);
+    } catch (error) {
+      console.log(error?.message);
+      toast.error(error.message);
+    }
+  };
+
+  const toggleButton = () => {
+    console.log("ici");
+    setShowForm(!showForm);
+  };
+
+  useEffect(() => {
+    if (!user.token) {
+      navigate(routes.LOGIN);
+    }
+  }, [firstName, lastName]);
+
+  console.log(showForm);
+
+  return (
+    <main className="main bg-dark">
       <div className="header">
-        <h1>Welcome back<br />Tony Jarvis!</h1>
-        <button className="edit-button">Edit Name</button>
+        <h1>
+          Welcome back
+          <br />
+          {!showForm ? `${user.firstName} ${user.lastName}` : ""}
+        </h1>
+        {showForm && (
+          <form onSubmit={onSubmit}>
+            <div className="edit">
+              <div className="input-wrapper">
+                <label htmlFor="firstName">Firstname</label>
+                <input
+                  type="text"
+                  id="firstName"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </div>
+              <div className="input-wrapper">
+                <label htmlFor="lastName">Lastname</label>
+                <input
+                  type="text"
+                  id="lastName"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </div>
+            </div>
+            <button type="submit" className="edit-button">
+              Save
+            </button>
+            <button
+              type="submit"
+              className="edit-button"
+              onClick={() => setShowForm(false)}
+            >
+              Cancel
+            </button>
+          </form>
+        )}
+        {!showForm && (
+          <button
+            className="edit-button"
+            onClick={() => setShowForm(!showForm)}
+          >
+            Edit Name
+          </button>
+        )}
       </div>
       <h2 className="sr-only">Accounts</h2>
       <section className="account">
@@ -41,7 +137,7 @@ const User: React.FC<UserProps> = () => {
         </div>
       </section>
     </main>
-    )
-}
+  );
+};
 
-export default User
+export default User;

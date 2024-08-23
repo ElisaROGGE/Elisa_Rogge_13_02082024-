@@ -275,6 +275,14 @@ body {
   background-color: #00bc77;
   color: #fff;
 }
+.edit{
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+}
+.edit-button{
+  width: auto;
+}
 
 @media (min-width: 720px) {
   .account {
