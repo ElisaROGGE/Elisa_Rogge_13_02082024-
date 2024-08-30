@@ -41,11 +41,6 @@ const User: React.FC<UserProps> = () => {
     }
   };
 
-  const toggleButton = () => {
-    console.log("ici");
-    setShowForm(!showForm);
-  };
-
   useEffect(() => {
     if (!user.token) {
       navigate(routes.LOGIN);
@@ -70,8 +65,8 @@ const User: React.FC<UserProps> = () => {
                 <input
                   type="text"
                   id="firstName"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
                 />
               </div>
               <div className="input-wrapper">
@@ -79,20 +74,20 @@ const User: React.FC<UserProps> = () => {
                 <input
                   type="text"
                   id="lastName"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
                 />
               </div>
             </div>
-            <button type="submit" className="edit-button">
-              Save
-            </button>
             <button
               type="submit"
               className="edit-button"
               onClick={() => setShowForm(false)}
             >
               Cancel
+            </button>
+            <button type="submit" className="edit-button">
+              Save
             </button>
           </form>
         )}

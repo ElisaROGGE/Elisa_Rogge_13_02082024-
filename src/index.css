@@ -257,6 +257,20 @@ body {
   color: #fff;
   font-weight: bold;
   padding: 10px;
+  margin-right: 15px;
+}
+
+.name-log{
+  display: flex;
+  gap: 15px;
+}
+
+.icon-margin{
+  margin-right: 10px;
+}
+
+.nav-firstname{
+  font-weight: 700;
 }
 
 .header {

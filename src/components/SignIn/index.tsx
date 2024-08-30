@@ -4,8 +4,8 @@ import { setUser } from "../../store/userSlice";
 import { getUser, login } from "../../services/user/user.service";
 import { useNavigate } from "react-router-dom";
 import { routes } from "../../routes";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface SignInProps {}
 
@@ -14,12 +14,12 @@ const SignIn: React.FC<SignInProps> = () => {
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const loginUser = async (event: React.FormEvent) => {
     event.preventDefault();
     const values = { email, password };
-    try{
+    try {
       const log = await login(values);
       const getUserData = await getUser(log.body.token);
       dispatch(
@@ -30,11 +30,10 @@ const SignIn: React.FC<SignInProps> = () => {
           token: log.body.token,
         })
       );
-      navigate(routes.PROFILE)
-    }
-    catch(error){
-      console.log(error?.message)
-      toast.error(error.message)
+      navigate(routes.PROFILE);
+    } catch (error) {
+      console.log(error?.message);
+      toast.error("Wrong email or password");
     }
   };
 
@@ -71,7 +70,7 @@ const SignIn: React.FC<SignInProps> = () => {
           </button>
         </form>
         <div className="absolute">
-        <ToastContainer />
+          <ToastContainer />
         </div>
       </section>
     </main>
