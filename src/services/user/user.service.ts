@@ -4,7 +4,7 @@ interface ILogin {
     email: string
     password: string
 }
-interface IUser{
+export interface IUser{
     lastName: string
     firstName: string
 }

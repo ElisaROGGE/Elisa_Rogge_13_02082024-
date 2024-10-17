@@ -1,5 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export interface RootState {
+  user: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    token: string;
+  };
+}
+
 const initialState = {
   lastName: '',
   firstName: '',
@@ -20,6 +29,6 @@ const userSlice = createSlice({
   }
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser } = userSlice.actions;
 
 export default userSlice.reducer;

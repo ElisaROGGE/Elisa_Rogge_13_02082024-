@@ -15,12 +15,10 @@ const User: React.FC<UserProps> = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user);
   const navigate = useNavigate();
-  console.log(user, "user");
 
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const values = { firstName, lastName };
-    console.log(values, "values");
     try {
       await updateUser(values, user.token);
       const getUserData = await getUser(user.token);
@@ -45,9 +43,7 @@ const User: React.FC<UserProps> = () => {
     if (!user.token) {
       navigate(routes.LOGIN);
     }
-  }, [firstName, lastName]);
-
-  console.log(showForm);
+  }, [firstName, lastName, navigate, user.token]);
 
   return (
     <main className="main bg-dark">

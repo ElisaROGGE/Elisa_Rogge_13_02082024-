@@ -1,10 +1,11 @@
 import { useSelector } from "react-redux";
 import logo from "../../assets/img/argentBankLogo.png";
+import { RootState } from "../../store/userSlice";
 
 interface NavbarProps {}
 
 const Navbar: React.FC<NavbarProps> = () => {
-  const user = useSelector((state) => state?.user);
+  const user = useSelector((state: RootState) => state?.user);
 
   return (
     <nav className="main-nav">
