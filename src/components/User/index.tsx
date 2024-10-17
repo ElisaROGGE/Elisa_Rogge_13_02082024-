@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser, updateUser } from "../../services/user/user.service";
+import { updateUser } from "../../services/user/user.service";
 import { setUser } from "../../store/userSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -9,11 +9,11 @@ import { routes } from "../../routes";
 interface UserProps {}
 
 const User: React.FC<UserProps> = () => {
-  const [lastName, setLastName] = useState("");
-  const [firstName, setFirstName] = useState("");
+  const user = useSelector((state) => state?.user);
+  const [lastName, setLastName] = useState(user.lastName);
+  const [firstName, setFirstName] = useState(user.firstName);
   const [showForm, setShowForm] = useState(false);
   const dispatch = useDispatch();
-  const user = useSelector((state) => state?.user);
   const navigate = useNavigate();
 
   const onSubmit = async (event: React.FormEvent) => {
@@ -21,14 +21,13 @@ const User: React.FC<UserProps> = () => {
     const values = { firstName, lastName };
     try {
       await updateUser(values, user.token);
-      const getUserData = await getUser(user.token);
       setFirstName(values.firstName);
       setLastName(values.lastName);
       dispatch(
         setUser({
           firstName: values.firstName,
           lastName: values.lastName,
-          email: getUserData.email,
+          email: user.email,
           token: user.token,
         })
       );
